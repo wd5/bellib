@@ -1,0 +1,28 @@
+body {
+	padding-top: 95px;
+	background: url("/static/img/body_background.png");
+}
+#content {
+	min-height: 550px;
+}
+
+/* Login form in TopMenu */
+#login_form {
+	margin: 5px;
+	width: 145px;
+}
+#login_form label {
+	width: 50px;
+	vertical-align: bottom;
+}
+#login_form input {
+	width: 80px;
+	margin-top: 3px;
+}
+/* Login form in TopMenu */
+
+#works_table td { vertical-align: middle;}
+#works_table tr td:nth-child(3) { width: 130px; }
+#works_table tr td:nth-child(4) { width: 120px; }
+#works_table tr td:nth-child(5) { width: 120px; }
+#works_table thead { font-weight: bold; }
