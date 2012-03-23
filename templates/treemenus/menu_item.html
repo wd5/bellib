@@ -1,0 +1,9 @@
+{%  if menu_item.flatpage %}
+	<a href="{{ menu_item.flatpage.url }}">
+		{{ menu_item.caption }}
+	</a>
+{%  else %}
+	<a href="{{ menu_item.url }}">
+		{{ menu_item.caption }}
+	</a>
+{% endif %}

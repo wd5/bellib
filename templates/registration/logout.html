@@ -1,0 +1,23 @@
+{% extends "registration/base_registration.html" %}
+
+{% block preload_js %}
+	<script type="text/javascript">
+		function timer(){
+			var obj=document.getElementById('timerInp');
+			obj.innerHTML--;
+
+			if(obj.innerHTML==0)
+				document.location = '{% url main_page %}';
+			else
+				setTimeout(timer,1000);
+		}
+		setTimeout(timer,1000);
+	</script>
+{% endblock %}
+
+{% block title %}Выход{% endblock %}
+{% block form_title %}Выход{% endblock %}
+
+{% block note %}
+	Вы перейдёте на <a href="{% url main_page %}">главную страницу</a> через <strong id="timerInp">5</strong>
+{% endblock %}

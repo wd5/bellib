@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block titlet %}Помощь{% endblock %}
+
+{% block content %}
+	<h1>Раздел помощи</h1>
+	<div style="margin-top: 30px;">
+		{% for g in guides %}
+			<h3>{{ g.title }}</h3>
+			<pre>{{ g.content }}</pre>
+			<br />
+		{% endfor %}
+	</div>
+{% endblock %}

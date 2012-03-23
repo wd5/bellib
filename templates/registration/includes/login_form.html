@@ -1,0 +1,28 @@
+<form class="form-horizontal" method="post" action="">
+	{% csrf_token %}
+	<fieldset>
+		<div class="control-group {% if form.email.errors %}error{% endif %}">
+			<label class="control-label" for="id_email">Email</label>
+			<div class="controls">
+				<input type="text" id="id_email" name="email" placeholder="Email…" value="{{ form.data.email }}">
+				{% if form.email.errors %}
+					<span class="help-inline">{{ form.email.errors|striptags }}</span>
+				{% endif %}
+			</div>
+		</div>
+		<div class="control-group {% if form.password.errors %}error{% endif %}">
+			<label class="control-label" for="id_password1">Пароль</label>
+			<div class="controls">
+				<input type="password" id="id_password1" name="password" placeholder="Пароль…" value="{{ form.data.password }}">
+				{% if form.password.errors %}
+					<span class="help-inline">{{ form.password.errors|striptags }}</span>
+				{% endif %}
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="control-actions">
+		<div class="control-group">
+			<button class="btn btn-primary" type="submit">Авторизорваться</button>
+		</div>
+	</fieldset>
+</form>

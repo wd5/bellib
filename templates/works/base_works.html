@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block preload_js %}
+	<script type="text/javascript">
+		function addWork() {document.location = '{% url work_add %}';}
+		function vote(workId, evaluation){
+			$.ajax({
+				type: "POST",
+				url: "/works/evaluation/set/",
+				data: "work=" + workId + "&evaluation=" + evaluation + "&csrfmiddlewaretoken={{ csrf_token }}",
+				dataType: "json",
+				success: function(res){
+					$('#workRatio' + workId).width(res.star_ratio.width);
+					$('#vote_message').remove();
+					switch (res.result){
+						case 'success':
+							$('#works_row').prepend("<div class=\"alert alert-success\" id='vote_message'><a class=\"close\" data-dismiss=\"alert\">×</a><strong>Ваш голос учтён.</strong> Спасибо!</div>");
+							break;
+						case 'limited_ip':
+							$('#works_row').prepend("<div class=\"alert alert-warning\" id='vote_message'><a class=\"close\" data-dismiss=\"alert\">×</a><strong>Вы уже голосовали</strong> Достигнут предел голосов за эту работу с данного IP адреса.</div>");
+							break;
+						case 'already_voted':
+							$('#works_row').prepend("<div class=\"alert alert-warning\" id='vote_message'><a class=\"close\" data-dismiss=\"alert\">×</a> Вы уже голосовали за эту работу.</div>");
+							break;
+					}
+				}
+			});
+		}
+	</script>
+{% endblock %}
+
+{% block preload_css %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/star_ratio.css" />
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="span10">
+			{% block breadcrumb %}{% endblock %}
+		</div>
+		<div class="span2">
+			{% block additional %}{% endblock %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12" id="works_row">
+			{% block works %}{% endblock %}
+		</div>
+	</div>
+{% endblock %}

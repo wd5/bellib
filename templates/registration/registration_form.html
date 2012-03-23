@@ -1,0 +1,63 @@
+{% extends "registration/base_registration.html" %}
+
+{% block title %}Регистрация{% endblock %}
+{% block form_title %}Регистрация нового пользователя{% endblock %}
+
+{% block note %}
+	{% if request.user.is_authenticated %}
+		Вы уже авторизованы как <strong>{{ request.user.username }}</strong>
+	{% else %}
+		Для регистрации на сайте укажите почту и имя пользователя. После вам придёт с инструкциями для подтверждения регистрации.
+	{% endif %}
+{% endblock %}
+
+{% block form %}
+	{% if not request.user.is_authenticated %}
+		<form class="form-horizontal" method="post" action="">
+			{% csrf_token %}
+			<fieldset>
+				<div class="control-group {% if form.username.errors %}error{% endif %}">
+					<label class="control-label" for="id_username">Имя пользователя</label>
+					<div class="controls">
+						<input type="text" id="id_username" name="username" placeholder="Имя пользователя…" value="{{ form.data.username }}">
+						{% if form.username.errors %}
+							<span class="help-inline">{{ form.username.errors|striptags }}</span>
+						{% endif %}
+					</div>
+				</div>
+				<div class="control-group {% if form.email.errors %}error{% endif %}">
+					<label class="control-label" for="id_email">Email</label>
+					<div class="controls">
+						<input type="text" id="id_email" name="email" placeholder="Email…" value="{{ form.data.email }}">
+						{% if form.email.errors %}
+							<span class="help-inline">{{ form.email.errors|striptags }}</span>
+						{% endif %}
+					</div>
+				</div>
+				<div class="control-group {% if form.password1.errors %}error{% endif %}">
+					<label class="control-label" for="id_password1">Пароль</label>
+					<div class="controls">
+						<input type="password" id="id_password1" name="password1" placeholder="Пароль…" value="{{ form.data.password1 }}">
+						{% if form.password1.errors %}
+							<span class="help-inline">{{ form.password1.errors|striptags }}</span>
+						{% endif %}
+					</div>
+				</div>
+				<div class="control-group {% if form.password2.errors %}error{% endif %}">
+					<label class="control-label" for="id_password2">Пароль (ещё раз)</label>
+					<div class="controls">
+						<input type="password" id="id_password2" name="password2" placeholder="Пароль (ещё раз)…" value="{{ form.data.password2 }}">
+						{% if form.password2.errors %}
+							<span class="help-inline">{{ form.password2.errors|striptags  }}</span>
+						{% endif %}
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="control-actions">
+				<div class="control-group">
+					<button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+				</div>
+			</fieldset>
+		</form>
+	{% endif %}
+{% endblock %}

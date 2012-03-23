@@ -1,0 +1,22 @@
+{% extends "works/base_works.html" %}
+
+{% block title %}Поиск работ{% endblock %}
+
+{% block breadcrumb %}
+	<ul class="breadcrumb">
+		<li>
+			<a href="{% url works_list %}">Работы пользователей</a> <span class="divider">/</span>
+		</li>
+		<li class="active">
+			Поиск работ <span class="divider">/</span>
+		</li>
+	</ul>
+{% endblock %}
+
+{% block additional %}
+	{% include "works/includes/work_add_button.html" %}
+{% endblock %}
+
+{% block works %}
+	{% include "works/includes/works_table.html" %}
+{% endblock %}

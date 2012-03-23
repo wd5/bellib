@@ -1,0 +1,22 @@
+{% load tree_menu_tags %}
+
+{% ifequal menu_type "top_horizontal" %}
+	{% for menu_item in menu.root_item.children %}
+		{% if menu_item.has_children %}
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					{{ menu_item.caption }}<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					{% for child in menu_item.children %}
+						{% show_menu_item child %}
+					{% endfor %}
+				</ul>
+			</li>
+		{%  else %}
+			<li>
+				{% show_menu_item menu_item %}
+			</li>
+		{% endif %}
+	{% endfor %}
+{% endifequal %}

@@ -1,0 +1,100 @@
+{% extends "works/base_works.html" %}
+{% load filename %}
+{% load thumbnail %}
+
+{% block title %}{{ work.name }}{% endblock %}
+
+{% block breadcrumb %}
+	<ul class="breadcrumb">
+		<li>
+			<a href="{% url works_list %}">Работы пользователей</a> <span class="divider">/</span>
+		</li>
+		<li>
+			<a href="{% url works_by_user work.user.id %}">
+				Работы пользователя <strong>{{ user.username }}</strong>
+			</a> <span class="divider">/</span>
+		</li>
+		<li class="active">
+			{{ work.name }} <span class="divider">/</span>
+		</li>
+	</ul>
+{% endblock %}
+
+{% block additional %}
+	{% if request.user.is_authenticated %}
+		{% ifequal request.user work.user %}
+			<button class="btn-success btn-large btn-primary" onClick="document.location = '{% url work_edit work.id %}'">
+				Редактировать
+			</button>
+		{% else %}
+			{% include "works/includes/work_add_button.html" %}
+		{% endifequal %}
+	{% else %}
+		{% include "works/includes/work_add_button.html" %}
+	{% endif %}
+{% endblock %}
+
+{% block works %}
+	<div class="work-description">
+		<h1>{{ work.name }}</h1>
+		<ul class='star-rating' style="border: 1px #D6D6D6 solid; border-radius: 3px;">
+			<li class='current-rating' style="width: {{ work.get_star_ratio.width }}px" id="workRatio{{ work.id }}"></li>
+			<li><a href="#" onclick="vote({{ work.id }}, 1); return false;" title='1 star out of 5' class='one-star'>1</a></li>
+			<li><a href="#" onclick="vote({{ work.id }}, 2); return false;" title='2 star out of 5' class='two-stars'>2</a></li>
+			<li><a href="#" onclick="vote({{ work.id }}, 3); return false;" title='3 star out of 5' class='three-stars'>3</a></li>
+			<li><a href="#" onclick="vote({{ work.id }}, 4); return false;" title='4 star out of 5' class='four-stars'>4</a></li>
+			<li><a href="#" onclick="vote({{ work.id }}, 5); return false;" title='5 star out of 5' class='five-stars'>5</a></li>
+		</ul>
+
+		<p align="justify">{{ work.description }}</p>
+		{% if work.has_files %}
+			<p>
+				<br />
+				<a href="{% url work_download work.id %}">
+					<strong>Скачать все файлы этой работы</strong>
+				</a>
+			</p>
+		{% endif %}
+		<hr />
+		<div class="span12">
+			<ul class="thumbnails work-images">
+				{% for image in image_file %}
+					<li class="span2">
+						<a href="#" class="thumbnail">
+							<img src="{% thumbnail image.file 160x120 %}" />
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+		{% if audio_file or text_files %}
+			<div class="row">
+				{% if text_files %}
+					<div class="span4 offset2">
+						<h3>Текстовые файлы работы:</h3>
+						<br />
+						<ul class="unstyled">
+							{% for text in text_files %}
+								<li>
+									<a href="{{ MEDIA_URL }}{{ text.file }}">{{ text.file|filename }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
+				{% if audio_file %}
+				<div class="span4 offset1">
+					<h3>Аудио файлы работы:</h3>
+					<ul class="unstyled">
+						{% for audio in audio_file %}
+						<li>
+							<a href="{{ MEDIA_URL }}{{ audio.file }}">{{ audio.file|filename }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				{% endif %}
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

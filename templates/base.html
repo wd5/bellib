@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<title>Края лучше.NET - {% block title %}{% endblock %}</title>
+		<meta name="description" content="">
+		<meta name="author" content="DrMartiner@GMail.Com">
+
+		<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<script src="{{ STATIC_URL }}js/jquery.min.1.7.1.js"></script>
+		<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+		<script>
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&appId=265536816854716";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
+		{% block preload_js %}{% endblock %}
+
+		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+		<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+		{% block preload_css %}{% endblock %}
+	</head>
+
+	<body>
+		<div id="fb-root"></div>
+		{% include "includes/top_menu.html" %}
+
+		<div class="container" >
+			<div id="content">
+				{% block content %}{% endblock %}
+			</div>
+
+			<footer class="footer">
+				<hr />
+				<p class="pull-right">
+					<p>
+						Телефон-факс: <code>+7(34670)2-53-51</code>
+					</p>
+					<p>
+						E-mail: <code><a href="mailto:bellib@bellib.ru">bellib@bellib.ru</a></code>
+					</p>
+				</p>
+			</footer>
+		</div>
+	</body>
+</html>

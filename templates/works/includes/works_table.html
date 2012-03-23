@@ -1,0 +1,51 @@
+{% load pytils_dt %}
+{%  load pagination_tags %}
+
+<table class="table table-striped table-bordered table-condensed" id="works_table">
+	<thead>
+		<tr>
+			<td>Работа</td>
+			<td>Описание</td>
+			<td>Пользователь</td>
+			<td>Добавлена</td>
+			<td>Рейтинг</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% autopaginate works 10 %}
+		{% for w in works %}
+			<tr>
+				<td>
+					<a href="{% url work_inside w.id %}">{{ w.name }}</a>
+				</td>
+				<td>
+					{{ w.info }}
+				</td>
+				<td>
+					<a href="{% url works_by_user w.user.id %}">{{ w.user.username }}</a>
+				</td>
+				<td>
+					{{ w.pub_date|ru_strftime:"%d %B %Y" }}
+				</td>
+				<td>
+					<ul class='star-rating'>
+						<li class='current-rating' style="width: {{ w.get_star_ratio.width }}px" id="workRatio{{ w.id }}"></li>
+						<li><a href="#" onclick="vote({{ w.id }}, 1); return false;" title='1 star out of 5' class='one-star'>1</a></li>
+						<li><a href="#" onclick="vote({{ w.id }}, 2); return false;" title='2 star out of 5' class='two-stars'>2</a></li>
+						<li><a href="#" onclick="vote({{ w.id }}, 3); return false;" title='3 star out of 5' class='three-stars'>3</a></li>
+						<li><a href="#" onclick="vote({{ w.id }}, 4); return false;" title='4 star out of 5' class='four-stars'>4</a></li>
+						<li><a href="#" onclick="vote({{ w.id }}, 5); return false;" title='5 star out of 5' class='five-stars'>5</a></li>
+					</ul>
+				</td>
+			</tr>
+		{% empty %}
+			<tr>
+				<td colspan="5">
+					<strong>Не найдено ни одной работы...</strong>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% paginate %}

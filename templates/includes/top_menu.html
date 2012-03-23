@@ -1,0 +1,117 @@
+{% load tree_menu_tags %}
+
+<script type="text/javascript">
+	// Не закрывает выпадающий список с формой авторизации
+	$(document).ready(function() {
+		$('.dropdown form').bind('click', function (e) {
+			e.stopPropagation()
+		});
+	});
+</script>
+
+<!-- Top Menu -->
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<ul class="nav pull-left">
+				{% ifequal request.path '/' %}
+					<a class="brand" href="#" id="logo" style="cursor: default;">Края лучше .NET</a>
+				{% else %}
+					<a class="brand" href="/" id="logo">Края лучше .NET</a>
+				{% endifequal %}
+
+				<!--li>
+					<form class="navbar-search pull-left" action="{% url works_search %}">
+						<input type="text" class="search-query" placeholder="Поиск работ" maxlength="128" name="query" value="{{ request.GET.query }}">
+					</form>
+				</li-->
+			</ul>
+
+			<ul class="nav pull-right">
+				<li {% ifequal request.path '/works/training/' %}class="active"{% endifequal %}>
+					<a href="{% url work_training %}">Разминка</a>
+				</li>
+				<li {% if '/works/list/' in request.path %}class="active"{% endif %}>
+					<a href="{% url works_list %}">Творчество</a>
+				</li>
+				<li {% ifequal request.path '/works/ratio/' %}class="active"{% endifequal %}>
+					<a href="{% url works_ratio %}">Рейтинг</a>
+				</li>
+				<li>
+					<a href="{% url guide_list %}">
+						<i class="icon-question-sign icon-white"></i> Помощь
+					</a>
+				</li>
+
+				<li class="dropdown">
+					{% if request.user.is_authenticated %}
+						<!-- Auth menu -->
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user icon-white"></i> {{ request.user.username }} <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="{% url works_by_user request.user.id %}">Мои работы</a>
+							</li>
+							<li>
+								<a href="{% url work_add %}">Добавить работу</a>
+							</li>
+							<li class="divider"></li>
+							<!--li>
+								<a href="#">
+									<i class="icon-cog"></i> Настройки
+								</a>
+							</li-->
+							<li>
+								<a href="{% url auth_logout %}">
+									<i class="icon-off"></i> Выйти
+								</a>
+							</li>
+						</ul>
+						<!-- Auth menu -->
+					{% else %}
+						<!-- No Auth menu -->
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user icon-white"></i> Войти<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<form class="form-inline" id="login_form" method="POST" action="{% url auth_login %}">
+									{% csrf_token %}
+									<label from="email">Почта:</label>
+									<input type="text" class="input-small" placeholder="Email" name="email">
+									<label from="password">Пароль:</label>
+									<input type="password" class="input-small" placeholder="Пароль" name="password">
+									<input type="submit" class="btn btn-primary" value="Войти" style="margin-left: 55px;">
+								</form>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="{% url registration_register %}">Регистрация</a>
+							</li>
+							<li>
+								<a href="{% url auth_password_reset %}">Забыли пароль?</a> <!-- TODO: Сделать шаблон -->
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="{% url socialauth_begin 'facebook' %}">
+									Войти используюя Facebook
+								</a>
+							</li>
+							<li>
+
+							</li>
+						</ul>
+						<!-- No Auth menu -->
+					{% endif %}
+				</li>
+			</ul>
+		</div>
+		<div class="container" style="">
+			<ul class="nav pull-left">
+				{% show_menu "MainMenu" "top_horizontal" %}
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- Top Menu -->

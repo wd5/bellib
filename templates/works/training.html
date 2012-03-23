@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block preload_css %}
+	<style>
+		h1 {margin-bottom: 10px;}
+		#training_form .row { margin-top: 15px; }
+		#training_form input {
+			vertical-align: top;
+			margin-right: 5px;
+		}
+	</style>
+{% endblock %}
+
+{% block title %}Разминка{% endblock %}
+
+{% block content %}
+	<h1>Разминка</h1>
+	<div class="alert alert-info">
+		<a class="close" data-dismiss="alert">×</a>
+		Вы можете пройти размину. Правила: !!!!допишите текст<br />
+	</div>
+	{% if not request.user.is_authenticated %}
+		Только авторизованные пользователи могут пройти тестирование.<br />
+		<a href="{% url auth_login %}">Авторизуйтесь</a> или <a href="{% url registration_register %}">зарегистрируйтесь</a>.
+	{% endif %}
+
+	{% if request.user.is_authenticated %}
+		{% if request.user.get_profile.did_training %}
+			<div class="alert alert-info">
+				<a class="close" data-dismiss="alert">×</a>
+				Вы уже прошли тест. Ваш результат: {{ request.user.get_profile.get_right_answerds }}
+			</div>
+		{% else %}
+			<div class="alert alert-warning">
+				<a class="close" data-dismiss="alert">×</a>
+				<h4 class="alert-heading">Внимание!</h4>
+				ответить на вопросы можно только один раз! !!!!допишите текст
+			</div>
+			{% if not_right %}
+				<div class="alert alert-error">
+					<a class="close" data-dismiss="alert">×</a>
+					неправильно {{ not_right }}
+				</div>
+			{% endif %}
+			{%  if questions %}
+				<form id="training_form" action="" method="post">
+					{% csrf_token %}
+					{% for q in questions %}
+						<div class="row">
+							<div class="span6">
+								<strong>Вопрос №{{ forloop.counter }}</strong>:
+								<pre>{{ q.question }}</pre>
+							</div>
+							<div class="span6">
+								<p><input type="radio" name="question_id{{ q.id }}" value="1" checked="checked">{{ q.answerd1 }}</p>
+								<p><input type="radio" name="question_id{{ q.id }}" value="2">{{ q.answerd2 }}</p>
+								<p><input type="radio" name="question_id{{ q.id }}" value="3">{{ q.answerd3 }}</p>
+								<p><input type="radio" name="question_id{{ q.id }}" value="4">{{ q.answerd4 }}</p>
+							</div>
+						</div>
+					{% endfor %}
+					<div class="row">
+						<div class="span2 offset6">
+							<button class="btn btn-primary" type="submit">Завершить разминку</button>
+						</div>
+					</div>
+				</form>
+			{% else %}
+				Вопросы не заданы. Обратитесь к администрации.
+			{% endif %}
+		{% endif %}
+	{% endif %}
+{% endblock %}

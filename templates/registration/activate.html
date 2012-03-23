@@ -1,0 +1,9 @@
+{% extends "registration/base_registration.html" %}
+
+{% block title %}Активация{% endblock %}
+{% block form_title %}Активация пользователя{% endblock %}
+
+{% block note %}
+	Ваша учётная запись активирована. <br />
+	Вы можете выполнить вход на сайт по этой ссылке: <a href="{% url auth_login %}">вход</a>.
+{% endblock %}

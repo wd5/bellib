@@ -1,0 +1,26 @@
+{% extends "registration/base_registration.html" %}
+
+{% block title %}Авторизация{% endblock %}
+{% block form_title %}Авторизация на сайте{% endblock %}
+
+{% block note %}
+	{% if request.user.is_authenticated %}
+		Вы уже авторизованы как <strong>{{ request.user.username }}</strong>
+	{% else %}
+		Для авторизации на сайте необходимо ввести почту и пароль.
+		Если вы забыли пароль, то можете восстановить его перейдя по ссылке <a href="{% url auth_password_reset %}">восстановления пароля</a>.<br />
+		Также вы можете <a href="{% url registration_register %}">зарегистрироваться</a> на нашем сайте.
+	{% endif %}
+{% endblock %}
+
+{% block form %}
+	{% if not request.user.is_authenticated %}
+		{% if form.errors %}
+			<div class="alert alert-error">
+				{{ form.errors|cut:"__all__"|striptags }}
+			</div>
+		{% endif %}
+
+		{% include "registration/includes/login_form.html" %}
+	{% endif %}
+{% endblock %}

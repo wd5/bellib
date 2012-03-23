@@ -1,0 +1,172 @@
+{% extends "works/base_works.html" %}
+
+{% block title %}Добавить работу{% endblock %}
+
+{% block preload_js %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// Грязный хак :)
+			$(window).load(function() {
+				console.log($('.breadcrumb').parent('div').removeClass('span10').addClass('span12'));
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block breadcrumb %}
+	<ul class="breadcrumb">
+		<li>
+			<a href="{% url works_list %}">Работы пользователей</a> <span class="divider">/</span>
+		</li>
+		{% if request.user.is_authenticated %}
+			<li>
+				<a href="{% url works_by_user request.user.id %}">
+					Работы пользователя <strong>{{ request.user.username }}</strong>
+				</a> <span class="divider">/</span>
+			</li>
+			{% if work_instance %}
+				<li>
+					<a href="{% url work_inside work_instance.id %}">
+						{{ work_instance.name }}
+					</a> <span class="divider">/</span>
+				</li>
+				<li class="active">
+					Редактировать работу <span class="divider">/</span>
+				</li>
+			{% else %}
+				<li class="active">
+					Добавить работу <span class="divider">/</span>
+				</li>
+			{% endif %}
+		{% endif %}
+	</ul>
+{% endblock %}
+
+{% block works %}
+	{% if request.user.is_authenticated %}
+		<form action="" method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="row">
+				<div class="span8">
+					<h1>Загрузка работы</h1>
+					<hr />
+				</div>
+			</div>
+			<div class="row">
+				<div class="span6">
+					<fieldset class="control-actions">
+						<div class="control-group {% if form.name.errors %}error{% endif %}">
+							<label class="control-label" for="id_name"></label>
+							<div class="controls">
+								<input class="span3" type="text" id="id_name" name="name" placeholder="Название работы…" value="{{ form.name.value|default:'' }}" maxlength="32">
+								{% if form.name.errors %}
+									<span class="help-inline">{{ form.name.errors|striptags }}</span>
+								{% endif %}
+							</div>
+						</div>
+						<div class="control-group {% if form.info.errors %}error{% endif %}">
+							<label class="control-label" for="id_info"></label>
+							<div class="controls">
+								<input class="span4" type="text" id="id_info" name="info" placeholder="Краткое описание работы…" value="{{ form.info.value|default:'' }}" maxlength="128">
+								{% if form.info.errors %}
+									<span class="help-inline">{{ form.info.errors|striptags }}</span>
+								{% endif %}
+							</div>
+						</div>
+						<div class="control-group {% if form.description.errors %}error{% endif %}">
+							<label class="control-label" for="id_info">Подробное описание</label>
+							<div class="controls">
+								<textarea id="id_description" name="description" class="input-xlarge span6" rows="5">{{ form.description.value|default:'' }}</textarea>
+								{% if form.description.errors %}
+									<span class="help-inline">{{ form.description.errors|striptags }}</span>
+								{% endif %}
+							</div>
+						</div>
+					</fieldset>
+					{%  if work_instance %}
+						<fieldset class="control-actions">
+							<div class="control-group">
+								<button class="btn btn-primary" type="submit">Редактировать</button>
+							</div>
+						</fieldset>
+					{% else %}
+						<fieldset class="control-actions">
+							<div class="control-group">
+								<button class="btn btn-primary" type="submit">Добавить</button>
+							</div>
+						</fieldset>
+					{% endif %}
+				</div>
+				{% if not work_instance %}
+					<div class="span6">
+						<div class="well" style="min-height: 195px;">
+							Вы можете загрузить работу, <strong>заполнив форму</strong>.<br />
+							Также вы можете загрузить изображения, текстовые и аудио фалы.
+						</div>
+					</div>
+				{% endif %}
+			</div>
+			{%  if not work_instance %}
+				<div class="row">
+					<hr />
+					<div class="span4">
+						{{ images_form_set.management_form }}
+						<h2>Изображения</h2>
+						<fieldset class="control-actions">
+							{% for form in images_form_set %}
+								<div class="control-group {% if form.file.errors %}error{% endif %}">
+									<label class="control-label" for="id_{{ images_form_set.prefix }}-{{ forloop.counter }}-file"></label>
+									<div class="controls">
+										<input class="input-file" type="file" name="{{ images_form_set.prefix }}-{{ forloop.counter }}-file" placeholder="Краткое описание работы…" id="id_{{ images_form_set.prefix }}-{{ forloop.counter }}-file">
+										{% if form.file.errors %}
+											<span class="help-inline">{{ form.file.errors|striptags }}</span>
+										{% endif %}
+									</div>
+								</div>
+							{% endfor %}
+						</fieldset>
+					</div>
+					<div class="span4">
+						{{ texts_form_set.management_form }}
+						<h2>Текстовые файлы</h2>
+						<fieldset class="control-actions">
+							{% for form in texts_form_set %}
+								<div class="control-group {% if form.file.errors %}error{% endif %}">
+									<label class="control-label" for="id_{{ texts_form_set.prefix }}-{{ forloop.counter }}-file"></label>
+									<div class="controls">
+										<input class="input-file" type="file" name="{{ texts_form_set.prefix }}-{{ forloop.counter }}-file" placeholder="Краткое описание работы…" id="id_{{ texts_form_set.prefix }}-{{ forloop.counter }}-file">
+										{% if form.file.errors %}
+											<span class="help-inline">{{ form.file.errors|striptags }}</span>
+										{% endif %}
+									</div>
+								</div>
+							{% endfor %}
+						</fieldset>
+					</div>
+					<div class="span4">
+						{{ audios_form_set.management_form }}
+						<h2>Аудио записи</h2>
+						<fieldset class="control-actions">
+							{% for form in audios_form_set %}
+								<div class="control-group {% if form.file.errors %}error{% endif %}">
+									<label class="control-label" for="id_{{ audios_form_set.prefix }}-{{ forloop.counter }}-file"></label>
+									<div class="controls">
+										<input class="input-file" type="file" name="{{ audios_form_set.prefix }}-{{ forloop.counter }}-file" placeholder="Краткое описание работы…" id="id_{{ audios_form_set.prefix }}-{{ forloop.counter }}-file">
+										{% if form.file.errors %}
+											<span class="help-inline">{{ form.file.errors|striptags }}</span>
+										{% endif %}
+									</div>
+								</div>
+							{% endfor %}
+						</fieldset>
+					</div>
+				</div>
+			{% endif %}
+		</form>
+	{% else %}
+		<h1>Авторизация</h1>
+		Для добавления работы авторизуйтесь.
+		<hr/>
+		{% include "registration/includes/login_form.html" %}
+	{% endif %}
+{% endblock %}
