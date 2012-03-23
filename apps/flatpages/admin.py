@@ -14,6 +14,12 @@ class FlatpageForm(forms.ModelForm):
     class Meta:
         model = FlatPage
 
+    class Media:
+        js = [
+            '/static/admin/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            '/static/admin/tinymce_setup/tinymce_setup.js',
+        ]
+
 
 class FlatPageAdmin(admin.ModelAdmin):
     form = FlatpageForm

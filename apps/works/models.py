@@ -55,6 +55,9 @@ class Work(models.Model):
         if WorkImages.objects.filter(work = self).count(): return True
         return False
 
+    def __unicode__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'Работа'
         verbose_name_plural = 'Работы'
@@ -107,7 +110,7 @@ class WorkText(models.Model):
             'application/msword',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            ]
+        ]
     )
     pub_date = models.DateTimeField('Загружен', auto_now_add=True)
 
@@ -125,10 +128,21 @@ class WorkAudio(models.Model):
             'audio/ogg',
             'audio/mpeg',
             'audio/x-ms-wma',
-            ]
+        ]
     )
     pub_date = models.DateTimeField('Загружен', auto_now_add=True)
 
     class Meta:
         verbose_name = 'Аудио'
         verbose_name_plural = 'Аудио записи работ'
+
+class CleanRatioRequest(models.Model):
+    """
+    Запрос на очистку рейтинга.
+    """
+    comment = models.TextField('Коментарий')
+    pub_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Запрос'
+        verbose_name_plural = 'Запрос на очистку рейтинга'

@@ -13,7 +13,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+#    ('Kuzmin Alexei', 'DrMartiner@GMail.Com'),
 )
 MANAGERS = ADMINS
 
@@ -70,24 +70,26 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.auth",
+    'django.contrib.auth.context_processors.auth',
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
     "django.core.context_processors.static",
-#    'social_auth.context_processors.social_auth_by_name_backends',
-#    'social_auth.context_processors.social_auth_backends',
-#    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'django.contrib.messages.context_processors.messages',
 )
 
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates')
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 INSTALLED_APPS = (
+    'grappelli.dashboard',
     'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -97,15 +99,16 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
+    'filebrowser',
     'captcha',
     'pagination',
     'registration',
     'pytils',
-    'sorl',
+    'sorl.thumbnail',
 #    'south',
     'treemenus',
     'profiles',
-#    'social_auth',
+    'social_auth',
 
     'flatpages',
     'simple_pages',
@@ -122,43 +125,35 @@ EMAIL_ADDRESS_FROM  = 'topay.po@gmail.com'
 
 GRAPPELLI_ADMIN_TITLE = 'Края лучше.NET'
 
+DIRECTORY = 'filebrowser'
+FILEBROWSER_DIRECTORY = 'filebrowser'
+URL_TINYMCE = ADMIN_MEDIA_PREFIX + "tinymce/jscripts/tiny_mce/"
+PATH_TINYMCE = ADMIN_MEDIA_PREFIX + "tinymce/jscripts/tiny_mce/"
+TINYMCE_JS_URL = ADMIN_MEDIA_PREFIX + "tinymce/jscripts/tiny_mce/tiny_mce.js"
+
 AUTH_PROFILE_MODULE = 'profiles.Profile'
 
 AUTHENTICATION_BACKENDS = (
     'profiles.backends.EmailBackend',
-#    'social_auth.backends.twitter.TwitterBackend',
-#    'social_auth.backends.facebook.FacebookBackend',
-#    'social_auth.backends.google.GoogleOAuthBackend',
-#    'social_auth.backends.google.GoogleOAuth2Backend',
-#    'social_auth.backends.google.GoogleBackend',
-#    'django.contrib.auth.backends.ModelBackend',
+    'social_auth.backends.facebook.FacebookBackend',
 )
 
-#SOCIAL_AUTH_ENABLED_BACKENDS = ('google', 'google-oauth', 'facebook', )
-#
-#TWITTER_CONSUMER_KEY         = ''
-#TWITTER_CONSUMER_SECRET      = ''
-#FACEBOOK_APP_ID              = ''
-#FACEBOOK_API_SECRET          = ''
-#GOOGLE_CONSUMER_KEY          = ''
-#GOOGLE_CONSUMER_SECRET       = ''
-#GOOGLE_OAUTH2_CLIENT_ID      = ''
-#GOOGLE_OAUTH2_CLIENT_SECRET  = ''
-#
-#LOGIN_URL = '/no-login/'
-#LOGIN_REDIRECT_URL = '/logged-in/'
-#LOGIN_ERROR_URL = '/login-error/'
-#
-#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/another-login-url/'
-#SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/new-users-redirect-url/'
-#SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/new-association-redirect-url/'
-#SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/account-disconnected-redirect-url/'
-#SOCIAL_AUTH_ERROR_KEY = 'social_errors'
-#
-#SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
-#SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
+SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook', )
 
-#SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
+FACEBOOK_APP_ID = '265536816854716'
+FACEBOOK_API_SECRET = '398c9518a2fbe6f543598e0434971010'
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/login/'
+LOGIN_ERROR_URL = '/accounts/login/'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
+SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
+
+SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
@@ -168,3 +163,5 @@ try:
     from local_settings import *
 except :
     raise 'local_settings.py doesn\'t exists in project root.'
+
+GRAPPELLI_INDEX_DASHBOARD = 'bellib.dashboard.CustomIndexDashboard'

@@ -10,6 +10,7 @@ urlpatterns = patterns('works.views',
     url(r'^list/(\d+)/$', 'work_inside', name='work_inside'),
     url(r'^list/download/(\d+)/$', 'work_download', name='work_download'),
     url(r'^list/add/$', 'work_add', name='work_add'),
+    url(r'^list/edit/(\d+)/$', 'work_add', name='work_edit'),
     url(r'^training/$', 'work_training', name='work_training'),
     url(r'^evaluation/set/$', 'work_set_evaluation', name='work_set_evaluation'),
 )

@@ -16,9 +16,28 @@ def login_by_email(request):
             cd = form.cleaned_data
             user = authenticate(username = cd['email'], password = cd['password'])
             login(request, user)
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', None) or '/')
+            if request.GET.get('next', None):
+                return HttpResponseRedirect(request.GET.get('next'))
+            else:
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', None) or '/')
 
     return render_to_response('registration/login.html',
     {
         'form': form,
+    }, context_instance=RequestContext(request))
+
+def facebook_new_user(request):
+    print request.GET
+
+    return render_to_response('registration/login.html',
+    {
+
+    }, context_instance=RequestContext(request))
+
+@login_required
+def facebook_complite(request):
+
+    return render_to_response('registration/login.html',
+    {
+
     }, context_instance=RequestContext(request))

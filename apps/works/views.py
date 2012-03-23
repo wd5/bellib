@@ -83,14 +83,33 @@ def work_download(request, work_id):
     return response
 
 def works_ratio(request):
+    """
+    Таблица с рейтингом работ.
+    """
+    works = []
+    for work in Work.objects.all():
+        works.append({
+            'work': work,
+            'ratio': work.get_ratio(),
+        })
+    works_sorted = sorted(works, key = lambda w: w.get('ratio'), reverse = True) # Сортировка по рейтингу
+    works = []
+    for work in works_sorted:
+        works.append(work['work'])
 
     return render_to_response('works/ratio.html',
     {
-        'works': Work.objects.order_by('?'),
+        'works': works,
     }, context_instance=RequestContext(request))
 
-def work_add(request):
-    work_form = WorkForm()
+@login_required
+def work_add(request, work_id = None):
+    work_instance = None
+    if work_id:
+        work_instance = get_object_or_404(Work, id=work_id)
+        work_form = WorkForm(instance=work_instance)
+    else:
+        work_form = WorkForm()
     TextsFormSet = formset_factory(WorkTextForm, extra=10, max_num=10)
     AudiosFormSet = formset_factory(WorkAudioForm, extra=10, max_num=10)
     ImagesFormSet = formset_factory(WorkImagesForm, extra=10, max_num=10)
@@ -108,9 +127,18 @@ def work_add(request):
         if work_form.is_valid() and \
             texts_formset.is_valid() and audios_formset.is_valid() and images_formset.is_valid():
 
-            work = work_form.save(commit=False)
-            work.user = request.user
-            work.save()
+            if work_id:
+                work = get_object_or_404(Work, id = work_id, user = request.user)
+
+                cd = work_form.cleaned_data
+                work.name = cd['name']
+                work.info = cd['info']
+                work.description = cd['description']
+                work.save()
+            else:
+                work = work_form.save(commit=False)
+                work.user = request.user
+                work.save()
 
             def save_forms(formset, work):
                 for form in formset.forms:
@@ -126,6 +154,7 @@ def work_add(request):
     return render_to_response('works/add_work.html',
     {
         'form': work_form,
+        'work_instance': work_instance,
         'texts_form_set': texts_formset,
         'audios_form_set': audios_formset,
         'images_form_set': images_formset,

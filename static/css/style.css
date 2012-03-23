@@ -26,3 +26,12 @@ body {
 #works_table tr td:nth-child(4) { width: 120px; }
 #works_table tr td:nth-child(5) { width: 120px; }
 #works_table thead { font-weight: bold; }
+
+.work-description p {
+	margin-top: 10px;
+	text-indent: 20px;
+}
+.work-images img {
+	width: 162px;
+	height: 162px;
+}
