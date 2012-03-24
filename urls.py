@@ -11,6 +11,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'simple_pages.views.main_page', name='main_page'),
+    url(r'^login/$', 'simple_pages.views.login_page', name='login_page'),
 
     (r'^works/', include('works.urls')),
     (r'^guide/', include('guide.urls')),

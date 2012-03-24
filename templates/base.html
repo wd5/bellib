@@ -13,15 +13,6 @@
 
 		<script src="{{ STATIC_URL }}js/jquery.min.1.7.1.js"></script>
 		<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
-		<script>
-			(function(d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) return;
-				js = d.createElement(s); js.id = id;
-				js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&appId=265536816854716";
-				fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-		</script>
 		{% block preload_js %}{% endblock %}
 
 		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
@@ -30,7 +21,6 @@
 	</head>
 
 	<body>
-		<div id="fb-root"></div>
 		{% include "includes/top_menu.html" %}
 
 		<div class="container" >

@@ -19,7 +19,7 @@ def login_by_email(request):
             if request.GET.get('next', None):
                 return HttpResponseRedirect(request.GET.get('next'))
             else:
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER', None) or '/')
+                return HttpResponseRedirect('/')
 
     return render_to_response('registration/login.html',
     {

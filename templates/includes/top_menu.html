@@ -43,9 +43,9 @@
 					</a>
 				</li>
 
-				<li class="dropdown">
-					{% if request.user.is_authenticated %}
-						<!-- Auth menu -->
+                {% if request.user.is_authenticated %}
+                    <!-- Auth menu -->
+                    <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="icon-user icon-white"></i> {{ request.user.username }} <b class="caret"></b>
 						</a>
@@ -68,43 +68,19 @@
 								</a>
 							</li>
 						</ul>
-						<!-- Auth menu -->
-					{% else %}
-						<!-- No Auth menu -->
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-user icon-white"></i> Войти<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<form class="form-inline" id="login_form" method="POST" action="{% url auth_login %}">
-									{% csrf_token %}
-									<label from="email">Почта:</label>
-									<input type="text" class="input-small" placeholder="Email" name="email">
-									<label from="password">Пароль:</label>
-									<input type="password" class="input-small" placeholder="Пароль" name="password">
-									<input type="submit" class="btn btn-primary" value="Войти" style="margin-left: 55px;">
-								</form>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a href="{% url registration_register %}">Регистрация</a>
-							</li>
-							<li>
-								<a href="{% url auth_password_reset %}">Забыли пароль?</a> <!-- TODO: Сделать шаблон -->
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a href="{% url socialauth_begin 'facebook' %}">
-									Войти используюя Facebook
-								</a>
-							</li>
-							<li>
-
-							</li>
-						</ul>
-						<!-- No Auth menu -->
-					{% endif %}
-				</li>
+                    </li>
+					<!-- Auth menu -->
+                {% else %}
+                    <!-- No Auth menu -->
+                    <li>
+                        <a href="{% url registration_register %}">Регистрация</a>
+                    </li>
+                    <li>
+                        <a href="{% url login_page %}?next=/">Вход</a>
+                    </li>
+                    <!-- No Auth menu -->
+                {% endif %}
+				
 			</ul>
 		</div>
 		<div class="container" style="">

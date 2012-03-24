@@ -9,3 +9,10 @@ def main_page(request):
     {
 
     }, context_instance=RequestContext(request))
+
+def login_page(request):
+
+    return render_to_response('simple_pages/login_page.html',
+    {
+
+    }, context_instance=RequestContext(request))
