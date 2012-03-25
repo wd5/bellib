@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     (r'^grappelli/?', include('grappelli.urls')),
     url(r'^admin/filebrowser/', include(site.urls)),
 
-    url(r'', include('social_auth.urls')),
+    url(r'^auth/', include('publicauth.urls')),
 )
 
 if settings.DEBUG:
