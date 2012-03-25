@@ -86,25 +86,31 @@ class Vote(models.Model):
         verbose_name = 'Оценка'
         verbose_name_plural = 'Рейтинг'
 
-class WorkImages(models.Model):
+class WorkFile(models.Model):
     work = models.ForeignKey(Work, verbose_name='Работа')
+    pub_date = models.DateTimeField('Загружен', auto_now_add=True)
+
+class WorkImages(WorkFile):
     file = ContentTypeRestrictedFileField(
         upload_to='work_images',
         max_upload_size=5242880,
         content_types=['image/gif', 'image/jpeg', 'image/png', ]
     )
-    pub_date = models.DateTimeField('Загружен', auto_now_add=True)
 
     class Meta:
         verbose_name = 'Изображение'
         verbose_name_plural = 'Изображения работ'
 
-class WorkText(models.Model):
-    work = models.ForeignKey(Work, verbose_name='Работа')
+class WorkText(WorkFile):
     file = ContentTypeRestrictedFileField(
         upload_to='work_texts',
         max_upload_size=2621440,
         content_types=[
+            'application/octet-stream',
+            'rtf',
+            'pdf',
+            'x-pdf',
+            'msword',
             'text/plain',
             'application/pdf',
             'application/msword',
@@ -112,25 +118,23 @@ class WorkText(models.Model):
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ]
     )
-    pub_date = models.DateTimeField('Загружен', auto_now_add=True)
 
     class Meta:
         verbose_name = 'Текст'
         verbose_name_plural = 'Тексты работ'
 
-class WorkAudio(models.Model):
-    work = models.ForeignKey(Work, verbose_name='Работа')
+class WorkAudio(WorkFile):
     file = ContentTypeRestrictedFileField(
         upload_to='work_audios',
         max_upload_size=10485760,
         content_types=[
+            'x-wav',
             'audio/mp4',
             'audio/ogg',
             'audio/mpeg',
             'audio/x-ms-wma',
         ]
     )
-    pub_date = models.DateTimeField('Загружен', auto_now_add=True)
 
     class Meta:
         verbose_name = 'Аудио'
