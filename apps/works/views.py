@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AnonymousUser
@@ -150,6 +151,7 @@ def work_add(request, work_id = None):
             save_forms(texts_formset, work)
             save_forms(audios_formset, work)
             save_forms(images_formset, work)
+            return redirect('works_by_user', request.user.id)
 
     return render_to_response('works/add_work.html',
     {
