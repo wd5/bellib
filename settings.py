@@ -59,6 +59,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'annoying.middlewares.RedirectMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,6 +68,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware', # Пагинатор
     'flatpages.middleware.FlatpageFallbackMiddleware',
+    'facebook.djangofb.FacebookMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -76,9 +79,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.request",
     "django.core.context_processors.static",
-    'social_auth.context_processors.social_auth_by_name_backends',
-    'social_auth.context_processors.social_auth_backends',
-    'social_auth.context_processors.social_auth_by_type_backends',
     'django.contrib.messages.context_processors.messages',
 )
 
@@ -106,9 +106,10 @@ INSTALLED_APPS = (
     'pytils',
     'sorl.thumbnail',
 #    'south',
+    'facebook',
     'treemenus',
     'profiles',
-    'social_auth',
+    'publicauth',
 
     'flatpages',
     'simple_pages',
@@ -116,14 +117,15 @@ INSTALLED_APPS = (
     'guide',
 )
 
-EMAIL_USE_TLS       = True
-EMAIL_HOST          = 'smtp.gmail.com'
-EMAIL_HOST_USER     = 'topay.po@gmail.com'
-EMAIL_HOST_PASSWORD = 'good_stap'
-EMAIL_PORT          = 587
-EMAIL_ADDRESS_FROM  = 'topay.po@gmail.com'
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = 'bellib-ru'
+EMAIL_HOST_PASSWORD = 'xyupizda3434245'
+EMAIL_PORT = 25
+EMAIL_ADDRESS_FROM = 'bellib-ru@yandex.ru'
 
 GRAPPELLI_ADMIN_TITLE = 'Края лучше.NET'
+GRAPPELLI_INDEX_DASHBOARD = 'bellib.dashboard.CustomIndexDashboard'
 
 DIRECTORY = 'filebrowser'
 FILEBROWSER_DIRECTORY = 'filebrowser'
@@ -133,27 +135,26 @@ TINYMCE_JS_URL = ADMIN_MEDIA_PREFIX + "tinymce/jscripts/tiny_mce/tiny_mce.js"
 
 AUTH_PROFILE_MODULE = 'profiles.Profile'
 
-AUTHENTICATION_BACKENDS = (
-    'profiles.backends.EmailBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-)
-
-SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook', )
-
 FACEBOOK_APP_ID = '265536816854716'
 FACEBOOK_API_SECRET = '398c9518a2fbe6f543598e0434971010'
+
+FACEBOOK_API_KEY = '265536816854716'
+FACEBOOK_SECRET_KEY = '398c9518a2fbe6f543598e0434971010'
+
+VKONTAKTE_APP_ID = 2871299
+VKONTAKTE_API_KEY = '2871299'
+VKONTAKTE_SECRET_KEY = 'DxEb1MINRZ73phPETBLB'
+
+FACEBOOK_PROFILE_MAPPING={'name': 'username', }
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/login/'
 LOGIN_ERROR_URL = '/accounts/login/'
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/'
-
-SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
-SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
-
-SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
+AUTHENTICATION_BACKENDS = (
+    'profiles.backends.EmailBackend',
+    'publicauth.PublicBackend',
+)
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
@@ -164,4 +165,3 @@ try:
 except :
     raise 'local_settings.py doesn\'t exists in project root.'
 
-GRAPPELLI_INDEX_DASHBOARD = 'bellib.dashboard.CustomIndexDashboard'
