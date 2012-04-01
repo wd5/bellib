@@ -150,3 +150,15 @@ class CleanRatioRequest(models.Model):
     class Meta:
         verbose_name = 'Запрос'
         verbose_name_plural = 'Запрос на очистку рейтинга'
+
+class Apply(models.Model):
+    """
+    Заявка на участие в проекте.
+    """
+    user = models.OneToOneField(User, verbose_name='Пользователь')
+    access = models.BooleanField('Разрешить')
+    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки на участие в проекте'

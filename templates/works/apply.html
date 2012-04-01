@@ -1,0 +1,55 @@
+{% extends "works/base_works.html" %}
+
+{% block title %}Подать заявку на участие в проекте{% endblock %}
+
+{% block works %}
+    <div class="row">
+        <div class="span8">
+            <h1>Заявка на участие в проекте</h1>
+            <br />
+            <p>
+                Придумайте текст
+            </p>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span8">
+            {% if not request.user.get_profile.get_apply_exists %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <fieldset class="control-actions">
+            {#            <div class="control-group {% if form.text.errors %}error{% endif %}">#}
+            {#                <label class="control-label" for="id_text"></label>#}
+            {#                <div class="controls">#}
+            {#                    <input class="span5" type="text" id="id_text" name="text" placeholder="Текст заявки…" value="{{ form.text.value|default:'' }}" maxlength="128">#}
+            {#                    {% if form.text.errors %}#}
+            {#                        <span class="help-inline">{{ form.text.errors|striptags }}</span>#}
+            {#                    {% endif %}#}
+            {#                </div>#}
+            {#            </div>#}
+                        <div class="control-group {% if form.agree.errors %}error{% endif %}">
+                            <label class="control-label" for="id_agree"></label>
+                            <div class="controls">
+                                <input type="checkbox" id="id_agree" name="agree">
+                                С правилами <a href="#">участия</a>  в проекте ознакомлен и согласен.
+                            </div>
+                            {% if form.agree.errors %}
+                                <span class="help-inline">Нужно согласиться с правилами уастия в проекте</span>
+                            {% endif %}
+                        </div>
+                        <div class="control-group">
+                            <button class="btn btn-primary" type="submit">Подать заявку</button>
+                        </div>
+                    </fieldset>
+                </form>
+            {% else %}
+                <p>
+                    <b>Вы уже подавали заявку на участие в проекте.</b><br />
+                    Дождитесь одобрения библиотекаря.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

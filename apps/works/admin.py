@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 
-from models import Work, Training, CleanRatioRequest
+from models import Work, Training, CleanRatioRequest, Apply
 
 class CleanRatioRequestAdmin(admin.ModelAdmin):
     list_display = ('pub_date', )
@@ -20,6 +20,17 @@ class CleanRatioRequestAdmin(admin.ModelAdmin):
 
         return obj
 
-admin.site.register(CleanRatioRequest, CleanRatioRequestAdmin)
+def user_email(obj):
+    return '<a href="mailto:%s">%s</a>' % (obj.user.email, obj.user.email)
+user_email.allow_tags = True
+user_email.admin_order_field = 'user'
+user_email.short_description = u'Почта пользователя'
+
+class ApplyAdmin(admin.ModelAdmin):
+    list_display = ('user', 'access', 'pub_date', user_email, )
+    list_filter = ('access', 'pub_date', )
+
+#admin.site.register(CleanRatioRequest, CleanRatioRequestAdmin)
 admin.site.register(Work)
 admin.site.register(Training)
+admin.site.register(Apply, ApplyAdmin)

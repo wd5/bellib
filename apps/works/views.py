@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import os
+from django.http import Http404
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AnonymousUser
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -13,6 +15,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.conf import  settings
 from django.utils import simplejson
+from forms import ApplyForm
 from forms import WorkForm
 from forms import WorkTextForm
 from forms import WorkAudioForm
@@ -23,7 +26,7 @@ from StringIO import StringIO
 from zipfile import ZipFile
 
 from profiles.models import Profile
-from models import Work, Training, Vote, WorkAudio, WorkImages, WorkText
+from models import Work, Training, Vote, WorkAudio, WorkImages, WorkText, Apply
 
 def works_list(request, user_id = None):
     works = Work.objects.order_by('pub_date')
@@ -105,6 +108,8 @@ def works_ratio(request):
 
 @login_required
 def work_add(request, work_id = None):
+    if not request.user.get_profile().get_apply_access:
+        raise Http404
     work_instance = None
     if work_id:
         work_instance = get_object_or_404(Work, id=work_id)
@@ -163,6 +168,10 @@ def work_add(request, work_id = None):
     }, context_instance=RequestContext(request))
 
 def work_training(request):
+    if not request.user.get_profile().get_apply_access:
+        raise Http404
+    if request.user.get_profile().did_training:
+        return HttpResponseRedirect(reverse('main_page'))
     not_right = 0 # Кол-во неправильных
     if request.user.is_authenticated and request.method == 'POST':
         answerds = {} # Ответы пользователя
@@ -179,7 +188,7 @@ def work_training(request):
 
         # Сохраняем результаты теста в профиль
         profile = Profile.objects.get(user = request.user)
-        profile.passed_training = True
+        profile.did_training = True
         profile.right_answerds = (10 - not_right) * 0.1
         profile.save()
 
@@ -218,3 +227,21 @@ def work_set_evaluation(request):
             rsponse['star_ratio'] = form.instance.work.get_star_ratio()
 
     return HttpResponse(simplejson.dumps(rsponse), mimetype='application/json')
+
+@login_required
+def work_apply(request):
+    """
+    Подать заявку.
+    """
+    form = ApplyForm()
+    if request.method == 'POST':
+        form = ApplyForm(request.POST)
+        if form.is_valid():
+            apply = Apply(user = request.user)
+            apply.save()
+            return HttpResponseRedirect(reverse('main_page'))
+
+    return render_to_response("works/apply.html",
+    {
+        'form': form,
+    }, context_instance=RequestContext(request))

@@ -18,6 +18,14 @@ class VoteForm(forms.ModelForm):
             raise forms.ValidationError('Недопустимое значение оценки.')
         return cd
 
+class ApplyForm(forms.Form):
+    agree = forms.BooleanField()
+
+    def clean_agree(self):
+        if not self.cleaned_data['agree']:
+            raise forms.ValidationError(u'Нужно согласиться с правилами уастия в проекте')
+        return self.cleaned_data['agree']
+
 class WorkForm(forms.ModelForm):
     class Meta:
         model = Work
