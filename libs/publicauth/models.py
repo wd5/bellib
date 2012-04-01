@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,3 +11,6 @@ class PublicID(models.Model):
 
     def __unicode__(self):
         return "%s -> %s" % (self.provider, self.identity)
+
+    class Meta:
+        verbose_name_plural = 'Пользователи из соц. сетей'
