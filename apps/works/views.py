@@ -108,8 +108,6 @@ def works_ratio(request):
 
 @login_required
 def work_add(request, work_id = None):
-    if not request.user.get_profile().get_apply_access:
-        raise Http404
     work_instance = None
     if work_id:
         work_instance = get_object_or_404(Work, id=work_id)
@@ -167,11 +165,8 @@ def work_add(request, work_id = None):
         'images_form_set': images_formset,
     }, context_instance=RequestContext(request))
 
+@login_required
 def work_training(request):
-    if not request.user.get_profile().get_apply_access:
-        raise Http404
-    if request.user.get_profile().did_training:
-        return HttpResponseRedirect(reverse('main_page'))
     not_right = 0 # Кол-во неправильных
     if request.user.is_authenticated and request.method == 'POST':
         answerds = {} # Ответы пользователя

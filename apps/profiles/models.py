@@ -26,7 +26,10 @@ class Profile(models.Model):
         if not apply:
             return False
         return apply.access
-
+    
+    @property
+    def has_apply(self):
+        return get_object_or_None(Apply ,user=self)
 
 def delete_user(instance, **kwargs):
     Profile.objects.filter(user=instance).delete()

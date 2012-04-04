@@ -33,7 +33,6 @@
 						<i class="icon-question-sign icon-white"></i> Помощь
 					</a>
 				</li>
-
                 {% if request.user.is_authenticated %}
                     <!-- Auth menu -->
                     <li class="dropdown">
@@ -45,20 +44,29 @@
                                 <li {% if 'by-user' in request.path %}class="active"{% endif %}>
                                     <a href="{% url works_by_user request.user.id %}">Мои работы</a>
                                 </li>
-                                <li {% ifequal request.path '/works/list/add/' %}class="active"{% endifequal %}>
-                                    <a href="{% url work_add %}">Добавить работу</a>
-                                </li>
-                                {% if not request.user.get_profile.did_training %}
-                                    <li class="divider"></li>
-                                    <li {% ifequal request.path '/works/training/' %}class="active"{% endifequal %}>
-                                        <a href="{% url work_training %}">Разминка</a>
-                                    </li>
-                                {% endif %}
                             {% else %}
                                 <li>
-                                    <a href="{% url work_apply %}">Подать заявку на участие</a>
+                                    <a href="{% url work_apply %}">
+                                        {% if request.user.get_profile.has_apply %}
+                                            <s>Подать заявку</s>
+                                        {% else %}
+                                            Подать заявку
+                                        {% endif %}
+                                    </a>
+                                </li>
+                                <li {% ifequal request.path '/works/training/' %}class="active"{% endifequal %}>
+                                    <a href="{% url work_training %}">
+                                        {% if request.user.get_profile.did_training %}
+                                            <s>Пройти разминку</s>
+                                        {% else %}
+                                            Пройти разминку
+                                        {% endif %}
+                                    </a>
                                 </li>
                             {% endif %}
+                            <li {% ifequal request.path '/works/list/add/' %}class="active"{% endifequal %}>
+                                <a href="{% url work_add %}">Добавить работу</a>
+                            </li>
 							<li class="divider"></li>
 							<li>
 								<a href="{% url auth_logout %}">
