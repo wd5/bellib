@@ -9,12 +9,24 @@
 	});
 </script>
 
+{% url works_ratio as url_ratio %}
+{% url guide_list as url_guide_list %}
+{% url works_list as url_works_list %}
+{% url work_apply as url_work_apply %}
+{% url work_add as url_work_add %}
+{% url work_training as url_work_training %}
+{% if request.user.is_authenticated %}
+    {% url works_by_user request.user.id as url_works_by_user %}
+{% endif %}
+{% url main_page as url_main_page %}
+{% url works_ratio as url_ratio %}
+
 <!-- Top Menu -->
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
 			<ul class="nav pull-left">
-				{% ifequal request.path '/' %}
+				{% ifequal request.path url_main_page %}
 					<a class="brand" href="#" id="logo" style="cursor: default;">Края лучше .NET</a>
 				{% else %}
 					<a class="brand" href="/" id="logo">Края лучше .NET</a>
@@ -22,13 +34,13 @@
 			</ul>
 
 			<ul class="nav pull-right">
-				<li {% if '/works/list/' in request.path %}class="active"{% endif %}>
+				<li {% if url_works_list in request.path %}class="active"{% endif %}>
 					<a href="{% url works_list %}">Творчество</a>
 				</li>
-				<li {% ifequal request.path '/works/ratio/' %}class="active"{% endifequal %}>
+				<li {% ifequal request.path url_ratio %}class="active"{% endifequal %}>
 					<a href="{% url works_ratio %}">Рейтинг</a>
 				</li>
-				<li {% ifequal request.path '/guide/list/' %}class="active"{% endifequal %}>
+				<li {% ifequal request.path url_guide_list %}class="active"{% endifequal %}>
 					<a href="{% url guide_list %}">
 						<i class="icon-question-sign icon-white"></i> Помощь
 					</a>
@@ -41,11 +53,11 @@
 						</a>
 						<ul class="dropdown-menu">
                             {% if request.user.get_profile.get_apply_access %}
-                                <li {% if 'by-user' in request.path %}class="active"{% endif %}>
+                                <li {% ifequal url_works_by_user request.path %}class="active"{% endifequal %}>
                                     <a href="{% url works_by_user request.user.id %}">Мои работы</a>
                                 </li>
                             {% else %}
-                                <li>
+                                <li {% ifequal request.path url_work_apply %}class="active"{% endifequal %}>
                                     <a href="{% url work_apply %}">
                                         {% if request.user.get_profile.has_apply %}
                                             <s>Подать заявку</s>
@@ -54,7 +66,7 @@
                                         {% endif %}
                                     </a>
                                 </li>
-                                <li {% ifequal request.path '/works/training/' %}class="active"{% endifequal %}>
+                                <li {% ifequal request.path url_work_training %}class="active"{% endifequal %}>
                                     <a href="{% url work_training %}">
                                         {% if request.user.get_profile.did_training %}
                                             <s>Пройти разминку</s>
@@ -64,7 +76,7 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            <li {% ifequal request.path '/works/list/add/' %}class="active"{% endifequal %}>
+                            <li {% ifequal request.path url_work_add %}class="active"{% endifequal %}>
                                 <a href="{% url work_add %}">Добавить работу</a>
                             </li>
 							<li class="divider"></li>
