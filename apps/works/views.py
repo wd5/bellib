@@ -232,8 +232,11 @@ def work_apply(request):
     if request.method == 'POST':
         form = ApplyForm(request.POST)
         if form.is_valid():
-            apply = Apply(user = request.user)
-            apply.save()
+            try:
+                apply = Apply(user = request.user)
+                apply.save()
+            except Exception:
+                pass
             return HttpResponseRedirect(reverse('main_page'))
 
     return render_to_response("works/apply.html",
