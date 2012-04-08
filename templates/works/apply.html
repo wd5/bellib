@@ -16,7 +16,17 @@
 
     <div class="row">
         <div class="span8">
-            {% if not request.user.get_profile.get_apply_exists %}
+            {% if request.user.get_profile.get_apply_exists %}
+                <p>
+                    {% if request.user.get_profile.get_apply_access %}
+                        Вы получили одобрение библиотекаря.
+                        Теперь вы модете пройти "<a href="{% url work_training %}">разминку</a>".
+                    {% else %}
+                        <b>Вы уже подавали заявку на участие в проекте.</b><br />
+                        Дождитесь одобрения библиотекаря.
+                    {% endif %}
+                </p>
+            {%  else %}
                 <form action="" method="POST">
                     {% csrf_token %}
                     <fieldset class="control-actions">
@@ -44,11 +54,6 @@
                         </div>
                     </fieldset>
                 </form>
-            {% else %}
-                <p>
-                    <b>Вы уже подавали заявку на участие в проекте.</b><br />
-                    Дождитесь одобрения библиотекаря.
-                </p>
             {% endif %}
         </div>
     </div>

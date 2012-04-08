@@ -34,7 +34,7 @@
 			</ul>
 
 			<ul class="nav pull-right">
-				<li {% if url_works_list in request.path %}class="active"{% endif %}>
+				<li {% ifequal url_works_list request.path %}class="active"{% endifequal %}>
 					<a href="{% url works_list %}">Творчество</a>
 				</li>
 				<li {% ifequal request.path url_ratio %}class="active"{% endifequal %}>
@@ -52,14 +52,14 @@
 							<i class="icon-user icon-white"></i> {{ request.user.username }} <b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-                            {% if request.user.get_profile.get_apply_access %}
+                            {% if request.user.get_profile.get_apply_access and request.user.get_profile.did_training %}
                                 <li {% ifequal url_works_by_user request.path %}class="active"{% endifequal %}>
                                     <a href="{% url works_by_user request.user.id %}">Мои работы</a>
                                 </li>
                             {% else %}
                                 <li {% ifequal request.path url_work_apply %}class="active"{% endifequal %}>
                                     <a href="{% url work_apply %}">
-                                        {% if request.user.get_profile.has_apply %}
+                                        {% if request.user.get_profile.get_apply_exists %}
                                             <s>Подать заявку</s>
                                         {% else %}
                                             Подать заявку

@@ -164,17 +164,29 @@
 			{% endif %}
 		</form>
 	{% else %}
-		Для добавления работы вам необходимо
-        {% if request.user.get_profile.has_apply %}
-            <s>подать заявку</s>
-        {% else %}
-            подать заявку
-        {% endif %}
-        и
-        {% if request.user.get_profile.did_training %}
-            <s>пройти разминку</s>
-        {% else %}
-            пройти разминку
-        {% endif %}.
+		<h3>Для добавления работы вам необходимо</h3>
+        <ul>
+            <li>
+                {% if request.user.get_profile.get_apply_exists %}
+                    <s>подать заявку</s>
+                {% else %}
+                    подать заявку
+                {% endif %}
+            </li>
+            <li>
+                {% if request.user.get_profile.get_apply_access %}
+                    <s>получить одобрение библиотекаря</s>
+                {% else %}
+                    получить одобрение библиотекаря
+                {% endif %}
+            </li>
+            <li>
+                {% if request.user.get_profile.did_training %}
+                    <s>пройти разминку</s>
+                {% else %}
+                    пройти разминку
+                {% endif %}
+            </li>
+        </ul>
 	{% endif %}
 {% endblock %}
