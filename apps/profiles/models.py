@@ -19,7 +19,7 @@ class Profile(models.Model):
         """
         Подавал ли пользователь заявку.
         """
-        if get_object_or_None(Apply ,user=self):
+        if get_object_or_None(Apply ,user=self.user):
             return True
         return False
 
@@ -28,14 +28,10 @@ class Profile(models.Model):
         """
         Получил ли пользователь одобрение.
         """
-        apply = get_object_or_None(Apply ,user=self)
+        apply = get_object_or_None(Apply ,user=self.user)
         if not apply:
             return False
         return apply.access
-    
-#    @property
-#    def has_apply(self):
-#        return get_object_or_None(Apply ,user=self)
 
 def delete_user(instance, **kwargs):
     Profile.objects.filter(user=instance).delete()
