@@ -16,20 +16,26 @@ class Profile(models.Model):
 
     @property
     def get_apply_exists(self):
+        """
+        Подавал ли пользователь заявку.
+        """
         if get_object_or_None(Apply ,user=self):
             return True
         return False
 
     @property
     def get_apply_access(self):
+        """
+        Получил ли пользователь одобрение.
+        """
         apply = get_object_or_None(Apply ,user=self)
         if not apply:
             return False
         return apply.access
     
-    @property
-    def has_apply(self):
-        return get_object_or_None(Apply ,user=self)
+#    @property
+#    def has_apply(self):
+#        return get_object_or_None(Apply ,user=self)
 
 def delete_user(instance, **kwargs):
     Profile.objects.filter(user=instance).delete()
