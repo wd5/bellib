@@ -24,6 +24,7 @@ from forms import VoteForm
 from django.forms.formsets import formset_factory
 from StringIO import StringIO
 from zipfile import ZipFile
+from annoying.functions import get_object_or_None
 
 from profiles.models import Profile
 from models import Work, Training, Vote, WorkAudio, WorkImages, WorkText, Apply
@@ -232,11 +233,9 @@ def work_apply(request):
     if request.method == 'POST':
         form = ApplyForm(request.POST)
         if form.is_valid():
-            try:
+            if not get_object_or_None(Apply, user=request.user):
                 apply = Apply(user = request.user)
                 apply.save()
-            except Exception:
-                pass
             return HttpResponseRedirect(reverse('main_page'))
 
     return render_to_response("works/apply.html",
