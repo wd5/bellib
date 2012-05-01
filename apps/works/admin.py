@@ -29,6 +29,7 @@ user_email.short_description = u'Почта пользователя'
 class ApplyAdmin(admin.ModelAdmin):
     list_display = ('user', 'access', 'pub_date', user_email, )
     list_filter = ('access', 'pub_date', )
+    list_editable = ['access', ]
 
 #admin.site.register(CleanRatioRequest, CleanRatioRequestAdmin)
 admin.site.register(Work)
