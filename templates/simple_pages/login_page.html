@@ -2,39 +2,6 @@
 
 {% block title %}{% endblock %}
 
-{% block preload_js %}
-    <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript" charset="windows-1251"></script>
-    <script type="text/javascript">
-        VK.init({
-            apiId: 2871299,
-            nameTransportPath: '{% url publicauth-vkontakte-xdreceiver %}'
-        });
-
-        function vk_login() {
-            VK.Auth.login(testMe);
-            return false;
-        }
-
-        function testMe(response) {
-            if (response.status == "connected") {
-                window.location = "{% url publicauth-complete 'vkontakte' %}"
-            }
-        };
-    </script>
-
-    <script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"></script>
-    <script type="text/javascript">
-        FB.init("{{ request.facebook.api_key }}", "{% url publicauth-facebook-xdreceiver %}");
-
-        function fb_login() {
-            FB.Connect.requireSession(function(test) {
-                window.location = "{% url publicauth-complete 'facebook' %}?next={{ request.GET.next }}";
-            });
-            return false;
-        }
-    </script>
-{% endblock %}
-
 {% block preload_css %}
     <style>
         h1 {
@@ -98,11 +65,11 @@
                                     <legend>Используя аккаунты социальных сетей</legend>
                                 </fieldset>
                             </form>
-                            <button style="margin-bottom: 20px;" id="facebook" class="btn-large btn-primary" onClick="return fb_login();">
+                            <a style="margin-bottom: 20px;" class="btn-large btn-primary" href="{% url socialauth_begin 'facebook' %}">
                                 Войти через Facebook
-                            </button>
-                            <p>
-                                А еще можно войти через <a onclick="return vk_login();" href="#">Вконтакте.ru</a>.
+                            </a>
+                            <p style="margin-top: 20px;">
+                                А еще можно войти через <a href="{% url socialauth_begin 'vkontakte' %}">Вконтакте.ru</a>.
                             </p>
                         </td>
                     </tr>
