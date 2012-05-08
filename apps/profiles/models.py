@@ -4,10 +4,12 @@ from django.db import models
 from django.db.models.signals import post_delete
 
 from django.contrib.auth.models import User
-from publicauth.models import PublicID
 from registration.models import RegistrationProfile
 from apps.works.models import Apply
 from annoying.functions import get_object_or_None
+from django.dispatch.dispatcher import receiver
+from social_auth.signals import pre_update
+from social_auth.models import UserSocialAuth
 
 class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -35,7 +37,17 @@ class Profile(models.Model):
 
 def delete_user(instance, **kwargs):
     Profile.objects.filter(user=instance).delete()
-    PublicID.objects.filter(user=instance).delete()
     RegistrationProfile.objects.filter(user=instance).delete()
+#    UserSocialAuth.objects.filter(user=instance)
     instance.delete()
 post_delete.connect(delete_user, sender=User)
+
+@receiver(pre_update)
+def update_person_details(sender, **kwargs):
+    if sender.name == 'vkontakte':
+        details = kwargs.get('details')
+        user = kwargs.get('user')
+        user.username = details['first_name'] + '_' + details['lastname']
+        user.save()
+
+    return True

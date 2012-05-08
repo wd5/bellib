@@ -70,7 +70,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware', # Пагинатор
     'flatpages.middleware.FlatpageFallbackMiddleware',
-    'facebook.djangofb.FacebookMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 )
 
@@ -82,6 +81,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.core.context_processors.static",
     'django.contrib.messages.context_processors.messages',
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
 )
 
 ROOT_URLCONF = 'urls'
@@ -108,10 +110,9 @@ INSTALLED_APPS = (
     'pytils',
     'sorl.thumbnail',
 #    'south',
-    'facebook',
     'treemenus',
     'profiles',
-    'publicauth',
+    'social_auth',
 
     'flatpages',
     'simple_pages',
@@ -122,7 +123,7 @@ INSTALLED_APPS = (
 EMAIL_USE_TLS = False
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_HOST_USER = 'bellib-ru'
-EMAIL_HOST_PASSWORD = 'xyupizda3434245'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_ADDRESS_FROM = 'bellib-ru@yandex.ru'
 
@@ -137,25 +138,22 @@ TINYMCE_JS_URL = ADMIN_MEDIA_PREFIX + "tinymce/jscripts/tiny_mce/tiny_mce.js"
 
 AUTH_PROFILE_MODULE = 'profiles.Profile'
 
-FACEBOOK_APP_ID = '265536816854716'
-FACEBOOK_API_SECRET = '398c9518a2fbe6f543598e0434971010'
+VK_APP_ID = ''
+VK_API_SECRET = ''
 
-FACEBOOK_API_KEY = '265536816854716'
-FACEBOOK_SECRET_KEY = '398c9518a2fbe6f543598e0434971010'
-
-VKONTAKTE_APP_ID = 2871299
-VKONTAKTE_API_KEY = '2871299'
-VKONTAKTE_SECRET_KEY = 'DxEb1MINRZ73phPETBLB'
-
-FACEBOOK_PROFILE_MAPPING={'name': 'username', }
+FACEBOOK_APP_ID = ''
+FACEBOOK_API_SECRET = ''
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/login/'
 LOGIN_ERROR_URL = '/accounts/login/'
 
 AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.contrib.vkontakte.VkontakteBackend',
+    'django.contrib.auth.backends.ModelBackend',
     'profiles.backends.EmailBackend',
-    'publicauth.PublicBackend',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 3
