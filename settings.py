@@ -28,7 +28,6 @@ USE_L10N = True
 
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__)) # Глобальный путь до проекта.
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'libs')) # Путь до библиотек.
-sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps')) # Путь до приложений проекта.
 
 SITE_NAME = path.basename(path.realpath(path.curdir))
 SITE_ROOT = os.path.join(path.realpath(path.pardir), SITE_NAME)
