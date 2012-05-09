@@ -1,5 +1,5 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url
 
-urlpatterns = patterns('flatpages.views',
+urlpatterns = patterns('apps.flatpages.views',
     (r'^(?P<url>.*)$', 'flatpage'),
 )

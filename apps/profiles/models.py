@@ -9,7 +9,6 @@ from apps.works.models import Apply
 from annoying.functions import get_object_or_None
 from django.dispatch.dispatcher import receiver
 from social_auth.signals import pre_update
-from social_auth.models import UserSocialAuth
 
 class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)

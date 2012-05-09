@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url
 
-urlpatterns = patterns('works.views',
+urlpatterns = patterns('apps.works.views',
     url(r'^ratio/$', 'works_ratio', name='works_ratio'),
     url(r'^list/$', 'works_list', name='works_list'),
     url(r'^list/search/$', 'works_list', name='works_search'),

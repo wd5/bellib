@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-from django.http import Http404
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -26,7 +25,7 @@ from StringIO import StringIO
 from zipfile import ZipFile
 from annoying.functions import get_object_or_None
 
-from profiles.models import Profile
+from apps.profiles.models import Profile
 from models import Work, Training, Vote, WorkAudio, WorkImages, WorkText, Apply
 
 def works_list(request, user_id = None):
