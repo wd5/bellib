@@ -38,7 +38,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.normpath(os.path.join(SITE_ROOT, 'static'))
 STATIC_URL = '/static/'
 
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = '/static/grappelli/'
 
 STATICFILES_DIRS = (
 
